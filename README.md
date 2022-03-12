@@ -12,8 +12,8 @@ This repository contains all the scripts to solve a Payroll task considering dif
 
 **Data format for every employee must be:**
 
-  1 Record: DAY&WorkingHoursInterval x N, N <= 4, & ∄
-  Format → EmployeName = 1Record x M, M <= 30
+  - 1 Record: DAY&WorkingHoursInterval x N, N <= 4, & ∄
+  - Format → EmployeName = 1Record x M, M <= 30
 
 **Possible scenarios**
   - Duplicated names of employees - Duplicated rows
