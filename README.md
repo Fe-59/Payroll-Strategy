@@ -2,7 +2,13 @@
 
 This repository contains all the scripts to solve a Payroll task considering different scenarios using unstructured data from a Text file. Strategy was the applied design pattern for this task due to none of the employees had any hierarchical relation. Classes and methods are well commented, nevertheless, these are some considerations used to develop this solution.
 
-Assumptions - Payment may be monthly; therefore, days can be repeated for any given employee. - Maximum number of employees is None - Minimum number of employees is 5. - Payment does not include any particular discounts or increases due to insurance or bonuses. - Input data must be a .txt file - Time intervals must be of exact hours as usual.
+**Assumptions** 
+- Payment may be monthly; therefore, days can be repeated for any given employee. 
+- Maximum number of employees is None 
+- Minimum number of employees is 5. 
+- Payment does not include any particular discounts or increases due to insurance or bonuses. 
+- Input data must be a .txt file 
+- Time intervals must be of exact hours as usual.
 
 **Data format for every employee must be:**
 
