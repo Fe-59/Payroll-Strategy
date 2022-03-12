@@ -16,7 +16,8 @@ This repository contains all the scripts to solve a Payroll task considering dif
   - Format → EmployeName = 1Record x M, M <= 30
 
 **Possible scenarios**
-  - Duplicated names of employees - Duplicated rows
+  - Duplicated names of employees
+  - Duplicated rows
   - Blank spaces
   - Repeated days (No more than 5 repetitions)
   - Different job intervals during the same day
