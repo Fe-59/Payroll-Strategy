@@ -27,10 +27,10 @@ Assumptions - Payment may be monthly; therefore, days can be repeated for any gi
    Python version == 3.9.6
    To run the solution just follow the next steps: 
    
-   1.- Clone this repository or
-   2.- Download PayrollExcercise folder and payroll.txt file
-   3.- - Note - [dataExtraction.py, dataStructurer.py, moneyMaker.py, Payroll] files must be included in the same folder 
-   4.- Use the above criteria for UnitTest folder and scripts
-   5.- Run Payroll.py file on your terminal/CMD: python Payroll.py
-   6.- Input the text file address on your system, like: C:/Users/Felix/Desktop/Ioet/payroll.txt ,as example.
-   7.- Have fun
+  - 1.- Clone this repository or
+  - 2.- Download PayrollExcercise folder and payroll.txt file
+  - 3.- - Note - [dataExtraction.py, dataStructurer.py, moneyMaker.py, Payroll] files must be included in the same folder 
+  - 4.- Use the above criteria for UnitTest folder and scripts
+  - 5.- Run Payroll.py file on your terminal/CMD: python Payroll.py
+  - 6.- Input the text file address on your system, like: C:/Users/Felix/Desktop/Ioet/payroll.txt ,as example.
+  - 7.- Have fun
