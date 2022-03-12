@@ -18,7 +18,7 @@ This repository contains all the scripts to solve a Payroll task considering dif
 **Possible scenarios**
   - Duplicated rows
   - Blank spaces
-  - Repeated days (No more than 5 repetitions)
+  - Repeated days 
   - Different salary ranges during the same job interval 
   - Transition intervals with different salary ranges in different days (Friday-Saturday, Sunday-Monday)
 
