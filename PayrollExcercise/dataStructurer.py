@@ -24,8 +24,8 @@ class DataWrapper:
       return chronicle
 
     def dataCollector(self, recordList: List) -> Dict:
-      """ This method returns a dictionary of days and their correposding worked hours
-          recordList must be a list of tuples wich cointais the days and the corresponding worked hours
+      """ This method returns a dictionary of days and their correposding worked hours.
+          recordList parameter must be a list of tuples which cointais the days and the corresponding worked hours.
       """
       MO = [i[1] for i in recordList if i[0]=='MO']
       TU = [i[1] for i in recordList if i[0]=='TU']
