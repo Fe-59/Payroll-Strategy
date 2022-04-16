@@ -143,7 +143,7 @@ class Accountant:
         if i in range(0,5):
           payMethod = self._weekdayRate        
         else:
-          payMethod = self._weekdayRate
+          payMethod = self._weekendRate
         
         cash = self.Calculator(payMethod,workRanges[i]) #------ Compute pay of Each Day ------#
         total.append(sum(cash))      
