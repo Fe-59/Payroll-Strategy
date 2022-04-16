@@ -1,7 +1,5 @@
 from __future__ import annotations
-from abc import ABC, abstractclassmethod
-from typing import List, Dict, Set, Sequence, Optional, Type
-import datetime as dt
+from traitlets.traitlets import SequenceTypes
 
 
 class Accountant:
@@ -57,47 +55,69 @@ class Accountant:
 
             parsedStringTime.append(range(steps[0],24))
             nextDayRanges.append(range(0,steps[2]))
+            # print("\033[1;32;40m", nextDayRanges)
 
           else:
             parsedStringTime.append(range(steps[0],steps[1]))
 
         cleanedRecord.append((lineRecord[0],parsedStringTime))
         if nextDayRanges:
-          cleanedRecord.append((lineRecord[0]+1,nextDayRanges))
+          cleanedRecord.append(((lineRecord[0]+1),nextDayRanges))
 
       """ cleanedRecord is a list of tuples wich contains the days and their corresponding worked hours,
           next step is to convert it into a dictionary of lists, considering the new created worked ranges 
           because of transitions between midnight such as the one shown below:
 
-          {1: ['10:00-12:00', '15:00-19:00'],             [(1, [range(10, 12), range(15, 19)]),
-           4: ['12:00-14:00', '20:00-02:00'],    ------>   (4, [range(12, 14), range(20, 24)]),
-           5: ['20:00-21:00']}                             (5, [range(0, 2)]),
-                                                           (5, [range(20, 21)])]
+                                                                            [
+          {1: ['10:00-12:00','15:00-19:00','22:00-03:00',                   (1, [range(10, 12), range(15, 19), range(22, 24), range(19, 24), range(23, 24)]),
+               '19:00-01:00','23:00-04:00'],                                (2, [range(0, 3), range(0, 1), range(0, 4)]),
+           2: ['08:00-10:00','20:00-03:00'],                  ---------->   (2, [range(8, 10), range(20, 24)]),
+           4: ['12:00-14:00', '20:00-02:00', '23:00-01:00'],                (3, [range(0, 3)]),
+           5: ['20:00-21:00']}                                              (4, [range(12, 14), range(20, 24), range(23, 24)]),
+                                                                            (5, [range(0, 2), range(0, 1)]),
+                                                                            (5, [range(20, 21)])
+                                                                            ]            
       """
       hmtimes = []
       parsedRecord = {}
       for i in range(len(cleanedRecord)):
-        hmtimes.append(cleanedRecord[i][0])
-        counter = {i:hmtimes.count(i) for i in hmtimes}
+        hmtimes.append(int(cleanedRecord[i][0]))
+        counter = {_:hmtimes.count(_) for _ in hmtimes} #---------------- Count days within cleanRecord list -------------#
 
-      if len(counter)==len(cleanedRecord):
+      if len(counter)==len(cleanedRecord):              #----------------- If counter and cleanRecord have the same number of elements -------------#
         parsedRecord = dict(cleanedRecord)
+
       else:
-        repeated = [m for m in counter.keys() if counter[m]>1]
-        repeated_idx = [cleanedRecord.index(i) for i in cleanedRecord if i[0] in repeated]
-        issue = []
-        for j in repeated:
-          issue.append([i[1][0] for i in cleanedRecord if i[0]==j])
+        repeated = [m for m in counter.keys() if counter[m]>1] #-------------------- Create a list of repeated days -----------------#        
+        indexes = {}
+        for r in repeated:                                     #------------- Find indexes of repeated days in cleanRecord -----------#
+          indexes[r] = [cleanedRecord.index(n) for n in cleanedRecord if int(n[0]) == r]
+        
+        dawnings = []
+        for key in indexes.keys():
+          keys = indexes[key]
+          day_rec = [cleanedRecord[i][1] for i in keys]
+
+          for rec in day_rec[1:]:
+            day_rec[0].extend(k for k in rec)
+          day_rec = day_rec[0]         
+          dawnings.append(day_rec)
         
         parsedRecord = dict(cleanedRecord)
         for r in range(len(repeated)):
-          parsedRecord[repeated[r]] = issue[r]
+          parsedRecord[repeated[r]] = dawnings[r]
 
       """ Finally, we get the dictionary with the right corresponding work ranges:
 
-          {1: ['10:00-12:00', '15:00-19:00'],             {1: [range(10, 12), range(15, 19)],
-           4: ['12:00-14:00', '20:00-02:00'],    ------>   4: [range(12, 14), range(20, 24)],
-           5: ['20:00-21:00']}                             5: [range(0, 2), range(20, 21)]}                       
+      [
+      (1, [range(10, 12), range(15, 19), range(22, 24), range(19, 24), range(23, 24)]),     {
+      (2, [range(0, 3), range(0, 1), range(0, 4)]),                                         1: [range(10, 12),range(15, 19),range(22, 24),range(19, 24),range(23, 24)],
+      (2, [range(8, 10), range(20, 24)]),                                           ----->  2: [range(0, 3), range(0, 1), range(0, 4), range(8, 10), range(20, 24)],
+      (3, [range(0, 3)]),                                                                   3: [range(0, 3)],
+      (4, [range(12, 14), range(20, 24), range(23, 24)]),                                   4: [range(12, 14), range(20, 24), range(23, 24)],
+      (5, [range(0, 2), range(0, 1)]),                                                      5: [range(0, 2), range(0, 1), range(20, 21)] 
+      (5, [range(20, 21)])                                                                  }
+      ]           
       """          
       
       return parsedRecord
@@ -121,7 +141,7 @@ class Accountant:
         if i in range(0,5):
           payMethod = self._weekdayRate        
         else:
-          payMethod = self._weekendRate
+          payMethod = self._weekdayRate
         
         cash = self.Calculator(payMethod,workRanges[i]) #------ Compute pay of Each Day ------#
         total.append(sum(cash))      
